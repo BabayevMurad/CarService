@@ -1,6 +1,8 @@
 using CarService.Data;
 using CarService.Data.Abstract;
 using CarService.Data.Concrete;
+using CityManagerApi2.Data.Abstract;
+using CityManagerApi2.Data.Concrete;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -17,6 +19,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
+builder.Services.AddScoped<IAppRepository, AppRepository>();
 
 var conn = builder.Configuration.GetConnectionString("Default");
 builder.Services.AddDbContext<AppDataContext>(option =>
