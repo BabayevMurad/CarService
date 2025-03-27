@@ -1,5 +1,5 @@
 ﻿using CarService.Entities;
-using CityManagerApi2.Data.Abstract;
+using CarService.Data.Abstract;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CarService.Controllers
