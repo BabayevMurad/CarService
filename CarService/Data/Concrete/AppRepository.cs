@@ -1,10 +1,10 @@
 ﻿using CarService.Data;
 using CarService.Data.Abstract;
 using CarService.Entities;
-using CityManagerApi2.Data.Abstract;
+using CarService.Data.Abstract;
 using Microsoft.EntityFrameworkCore;
 
-namespace CityManagerApi2.Data.Concrete
+namespace CarService.Data.Concrete
 {
     public class AppRepository : IAppRepository
     {

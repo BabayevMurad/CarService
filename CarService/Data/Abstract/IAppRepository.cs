@@ -1,6 +1,6 @@
 ﻿using CarService.Entities;
 
-namespace CityManagerApi2.Data.Abstract
+namespace CarService.Data.Abstract
 {
     public interface IAppRepository
     {
