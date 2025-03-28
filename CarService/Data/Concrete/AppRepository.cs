@@ -1,7 +1,6 @@
 ﻿using CarService.Data;
 using CarService.Data.Abstract;
 using CarService.Entities;
-using CarService.Data.Abstract;
 using Microsoft.EntityFrameworkCore;
 
 namespace CarService.Data.Concrete
@@ -44,6 +43,16 @@ namespace CarService.Data.Concrete
                  .Details
                  .Include(d => d.Image)
                  .ToListAsync();    
+            return details;
+        }
+
+        public async Task<List<Detail>> GetAllDetailsByCategory(int id)
+        {
+            var details = await _context
+                 .Details
+                 .Include(d => d.Image)
+                 .Where(d => d.CategoryId == id)
+                 .ToListAsync();
             return details;
         }
 
