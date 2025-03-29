@@ -48,5 +48,13 @@ namespace CarService.Controllers
 
             return detail;
         }
+
+        [HttpGet("detailByCategory/{id}")]
+        public Task<List<Detail>> DetailByCategory(int id)
+        {
+            var detail = _appRepository.GetAllDetailsByCategory(id);
+
+            return detail;
+        }
     }
 }

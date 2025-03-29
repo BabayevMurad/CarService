@@ -18,20 +18,20 @@ namespace CarService.Data.Concrete
         public async Task<User> Login(string username, string password)
         {
             var user = await _context.Users.FirstOrDefaultAsync(x => x.Username == username);
-            if (user == null) return null;
+            if (user == null) return null!;
             if (!VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
             {
-                return null;
+                return null!;
             }
             return user;
         }
 
         private bool VerifyPasswordHash(string password, byte[]? passwordHash, byte[]? passwordSalt)
         {
-            using (var hmac = new HMACSHA512(passwordSalt))
+            using (var hmac = new HMACSHA512(passwordSalt!))
             {
                 var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
-                return computedHash.SequenceEqual(passwordHash);
+                return computedHash.SequenceEqual(passwordHash!);
             }
         }
 

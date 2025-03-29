@@ -63,7 +63,7 @@ namespace CarService.Data.Concrete
                  .Include(c => c.Details)
                  .FirstOrDefaultAsync(x => x.Id == id);
 
-            return details;
+            return details!;
         }
 
         public async Task<Detail> GetDetail(int id)
@@ -73,7 +73,7 @@ namespace CarService.Data.Concrete
                  .Include(d => d.Image)
                  .FirstOrDefaultAsync(d => d.Id == id);
 
-            return details;
+            return details!;
         }
 
         public async Task<bool> SaveAllAsync()
