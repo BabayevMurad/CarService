@@ -41,7 +41,6 @@ namespace CarService.Data.Concrete
         {
             var details = await _context
                  .Details
-                 .Include(d => d.Image)
                  .ToListAsync();    
             return details;
         }
@@ -50,7 +49,6 @@ namespace CarService.Data.Concrete
         {
             var details = await _context
                  .Details
-                 .Include(d => d.Image)
                  .Where(d => d.CategoryId == id)
                  .ToListAsync();
             return details;
@@ -70,7 +68,6 @@ namespace CarService.Data.Concrete
         {
             var details = await _context
                  .Details
-                 .Include(d => d.Image)
                  .FirstOrDefaultAsync(d => d.Id == id);
 
             return details!;

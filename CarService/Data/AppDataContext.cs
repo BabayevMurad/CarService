@@ -1,4 +1,5 @@
-﻿using CarService.Entities;
+﻿using CarService.Dtos;
+using CarService.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace CarService.Data
@@ -13,13 +14,19 @@ namespace CarService.Data
         public DbSet<User> Users { get; set; }
         public DbSet<Category> Category { get; set; }
         public DbSet<Detail> Details { get; set; }
-        public DbSet<DetailImage> DetailImages { get; set; }
+        public DbSet<Cart> Cart { get; set; }
+        public DbSet<DetailDto> CartDetails { get; set; }
+        
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Detail>()
                 .Property(d => d.Price)
-                .HasColumnType("DECIMAL(18,2)");  // 6 total digits, 1 digits after the decimal
+                .HasColumnType("DECIMAL(18,2)");
+
+            modelBuilder.Entity<DetailDto>()
+              .Property(d => d.Price)
+              .HasColumnType("DECIMAL(18,2)");
         }
     }
 }
