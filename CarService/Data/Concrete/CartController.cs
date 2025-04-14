@@ -29,6 +29,13 @@ namespace CarService.Data.Concrete
             _context.SaveChanges();
         }
 
+        public async void AddCartName(Cart cart)
+        {
+            await _appRepository.AddAsync(cart);
+
+            _context.SaveChanges();
+        }
+
         public Task<Cart> GetCart(int id) 
         {
             var cart = _context.Cart

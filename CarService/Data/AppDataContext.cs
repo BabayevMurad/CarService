@@ -27,6 +27,10 @@ namespace CarService.Data
             modelBuilder.Entity<DetailDto>()
               .Property(d => d.Price)
               .HasColumnType("DECIMAL(18,2)");
+
+            modelBuilder.Entity<User>()
+              .Property(d => d.Money)
+              .HasColumnType("DECIMAL(18,2)");
         }
     }
 }
