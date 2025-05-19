@@ -1,39 +1,54 @@
-﻿using CarService.DataAccess;
+﻿
+
+using CarService.DataAccess;
+
 using Microsoft.AspNetCore.SignalR;
+
 using Microsoft.EntityFrameworkCore;
-using System.Data;
 
 namespace CarService.WebApi.Hubs
 
 {
 
     public class MessageHub : Hub
+
     {
-        private static Dictionary<string, int> ConnectedUsers = new();
+
+        // "role:username" → connectionId
+
+        private static Dictionary<string, string> ConnectedUsers = new();
 
         private readonly AppDataContext _context;
 
         public MessageHub(AppDataContext context)
+
         {
+
             _context = context;
+
         }
 
         public override async Task OnConnectedAsync()
+
         {
 
-            var username = Context.GetHttpContext()?.Request.Query["username"].ToString();
-            var role = Context.GetHttpContext()?.Request.Query["role"].ToString();
+            var httpContext = Context.GetHttpContext();
 
-            if (!string.IsNullOrEmpty(username))
+            var username = httpContext?.Request.Query["username"].ToString();
+
+            var role = httpContext?.Request.Query["role"].ToString();
+
+            if (!string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(role))
+
             {
 
-                int userId = await GetUserIdFromDb(username, role!);
+                string userKey = $"{role}:{username}";
 
-                if (userId > 0)
-                {
-                    ConnectedUsers[Context.ConnectionId] = userId;
-                    await Clients.All.SendAsync("ReceiveConnectInfo", $"{username} (ID: {userId}) qoşuldu ✅");
-                }
+                ConnectedUsers[userKey] = Context.ConnectionId;
+
+                int userId = await GetUserIdFromDb(username, role);
+
+                await Clients.All.SendAsync("ReceiveConnectInfo", $"{username} ({role}, ID: {userId}) qoşuldu ✅");
 
             }
 
@@ -42,14 +57,20 @@ namespace CarService.WebApi.Hubs
         }
 
         public override async Task OnDisconnectedAsync(Exception? exception)
+
         {
 
-            if (ConnectedUsers.TryGetValue(Context.ConnectionId, out var userId))
+            var currentConnectionId = Context.ConnectionId;
+
+            var user = ConnectedUsers.FirstOrDefault(x => x.Value == currentConnectionId);
+
+            if (!string.IsNullOrEmpty(user.Key))
+
             {
 
-                ConnectedUsers.Remove(Context.ConnectionId);
+                ConnectedUsers.Remove(user.Key);
 
-                await Clients.All.SendAsync("ReceiveDisconnectInfo", $"ID {userId} ayrıldı ❌");
+                await Clients.All.SendAsync("ReceiveDisconnectInfo", $"{user.Key} ayrıldı ❌");
 
             }
 
@@ -57,65 +78,77 @@ namespace CarService.WebApi.Hubs
 
         }
 
-        public async Task SendPrivateMessage(int fromId, int toId, string message)
+        // username + role əsaslı mesaj göndərmək
+
+        public async Task SendPrivateMessage(string fromKey, string toKey, string message)
+
         {
 
-            var targetConnectionId = ConnectedUsers
-                .FirstOrDefault(x => x.Value == toId).Key;
+            if (ConnectedUsers.TryGetValue(toKey, out var targetConnId))
 
-            if (!string.IsNullOrEmpty(targetConnectionId))
             {
-                await Clients.Client(targetConnectionId)
 
-                    .SendAsync("ReceivePrivateMessage", fromId, message);
+                await Clients.Client(targetConnId)
+
+                    .SendAsync("ReceivePrivateMessage", fromKey, message);
+
+            }
+
+            if (ConnectedUsers.TryGetValue(fromKey, out var senderConnId))
+
+            {
+
+                await Clients.Client(senderConnId)
+
+                    .SendAsync("ReceivePrivateMessage", fromKey, message);
+
             }
 
         }
 
+        // ID bazadan çəkilir, sadəcə info üçün
+
         private async Task<int> GetUserIdFromDb(string username, string role)
+
         {
-            //var user = await _context.Users
-            //    .Where(u => u.Username == username)
-            //    .Select(u => (int?)u.Id)
-            //    .FirstOrDefaultAsync();
 
-            //if (user.HasValue)
-            //    return user.Value;
+            if (role == "user")
 
-            //var admin = await _context.Admins
-            //    .Where(a => a.Username == username)
-            //    .Select(a => (int?)a.Id)
-            //    .FirstOrDefaultAsync();
-
-            //return admin ?? 0;
-
-            if (!string.IsNullOrEmpty(username))
             {
-                if(role == "user")
-                {
-                    var user = await _context.Users
-                        .Where(u => u.Username == username)
-                        .Select(u => (int?)u.Id)
-                        .FirstOrDefaultAsync();
 
-                        return user.Value;
-                }
+                var user = await _context.Users
 
-                else if(role == "admin")
-                {
-                    var admin = await _context.Admins
-                        .Where(a => a.Username == username)
-                        .Select(a => (int?)a.Id)
-                        .FirstOrDefaultAsync();
-                    return admin.Value;
-                }
+                    .Where(u => u.Username == username)
+
+                    .Select(u => (int?)u.Id)
+
+                    .FirstOrDefaultAsync();
+
+                return user ?? 0;
+
+            }
+
+            else if (role == "admin")
+
+            {
+
+                var admin = await _context.Admins
+
+                    .Where(a => a.Username == username)
+
+                    .Select(a => (int?)a.Id)
+
+                    .FirstOrDefaultAsync();
+
+                return admin ?? 0;
+
             }
 
             return 0;
+
         }
 
     }
 
 }
-
 
