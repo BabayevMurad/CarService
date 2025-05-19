@@ -22,11 +22,12 @@ namespace CarService.WebApi.Hubs
         {
 
             var username = Context.GetHttpContext()?.Request.Query["username"].ToString();
+            var role = Context.GetHttpContext()?.Request.Query["role"].ToString();
 
             if (!string.IsNullOrEmpty(username))
             {
 
-                int userId = await GetUserIdFromDb(username);
+                int userId = await GetUserIdFromDb(username, role!);
 
                 if (userId > 0)
                 {
@@ -71,22 +72,46 @@ namespace CarService.WebApi.Hubs
 
         }
 
-        private async Task<int> GetUserIdFromDb(string username)
+        private async Task<int> GetUserIdFromDb(string username, string role)
         {
-            var user = await _context.Users
-                .Where(u => u.Username == username)
-                .Select(u => (int?)u.Id)
-                .FirstOrDefaultAsync();
+            //var user = await _context.Users
+            //    .Where(u => u.Username == username)
+            //    .Select(u => (int?)u.Id)
+            //    .FirstOrDefaultAsync();
 
-            if (user.HasValue)
-                return user.Value;
+            //if (user.HasValue)
+            //    return user.Value;
 
-            var admin = await _context.Admins
-                .Where(a => a.Username == username)
-                .Select(a => (int?)a.Id)
-                .FirstOrDefaultAsync();
+            //var admin = await _context.Admins
+            //    .Where(a => a.Username == username)
+            //    .Select(a => (int?)a.Id)
+            //    .FirstOrDefaultAsync();
 
-            return admin ?? 0;
+            //return admin ?? 0;
+
+            if (!string.IsNullOrEmpty(username))
+            {
+                if(role == "user")
+                {
+                    var user = await _context.Users
+                        .Where(u => u.Username == username)
+                        .Select(u => (int?)u.Id)
+                        .FirstOrDefaultAsync();
+
+                        return user.Value;
+                }
+
+                else if(role == "admin")
+                {
+                    var admin = await _context.Admins
+                        .Where(a => a.Username == username)
+                        .Select(a => (int?)a.Id)
+                        .FirstOrDefaultAsync();
+                    return admin.Value;
+                }
+            }
+
+            return 0;
         }
 
     }
