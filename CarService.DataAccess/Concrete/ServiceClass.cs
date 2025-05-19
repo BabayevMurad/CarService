@@ -1,11 +1,6 @@
 ﻿using CarService.DataAccess.Abstract;
 using CarService.Entities;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CarService.DataAccess.Concrete
 {
@@ -24,9 +19,9 @@ namespace CarService.DataAccess.Concrete
 
             _context.RepairHistories.Add(new RepairHistory
             {
-                CarId = carRepair.CarId,
+                CarId = carRepair!.CarId,
                 RepairDate = DateTime.Now,
-                Cost = GetRepairPrice(carRepair.Issue)
+                Cost = GetRepairPrice(carRepair.Issue!)
             });
 
             _context.CarsRepair.Remove(carRepair);
@@ -40,7 +35,7 @@ namespace CarService.DataAccess.Concrete
                     .Include(c => c.Issue)
                     .FirstOrDefaultAsync(c => c.CarId == carId);
 
-            return issue.Issue;
+            return issue!.Issue!;
         }
 
         public async Task<Car> GetCarForRepair()
@@ -49,14 +44,14 @@ namespace CarService.DataAccess.Concrete
                 Include(c => c.Car)
                 .FirstAsync();
 
-            return car.Car;
+            return car.Car!;
         }
 
         public async Task<decimal> GetRepairPrice(int issueId)
         {
             var issue = await _context.Issues.FirstOrDefaultAsync(i => i.Id == issueId);
 
-            if (issue.Level == "Medium")
+            if (issue!.Level == "Medium")
             {
                 return (decimal)160;
             }

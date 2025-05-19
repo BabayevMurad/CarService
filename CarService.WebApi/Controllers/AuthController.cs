@@ -79,7 +79,7 @@ namespace CarService.WebApi.Controllers
 
             var tokenHandler = new JwtSecurityTokenHandler();
 
-            var key = Encoding.ASCII.GetBytes(_configuration.GetSection("AppSettings:Token").Value);
+            var key = Encoding.ASCII.GetBytes(_configuration.GetSection("AppSettings:Token").Value!);
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
@@ -113,7 +113,7 @@ namespace CarService.WebApi.Controllers
 
             var tokenHandler = new JwtSecurityTokenHandler();
 
-            var key = Encoding.ASCII.GetBytes(_configuration.GetSection("AppSettings:Token").Value);
+            var key = Encoding.ASCII.GetBytes(_configuration.GetSection("AppSettings:Token").Value!);
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {

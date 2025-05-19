@@ -37,7 +37,7 @@ namespace CarService.DataAccess.Concrete
                 await _context.SaveChangesAsync();
             }
 
-            return user.Money;
+            return user!.Money;
         }
 
         public async Task<decimal> UserPay(int userId, decimal money)
@@ -57,7 +57,7 @@ namespace CarService.DataAccess.Concrete
                 }
             }
 
-            return user.Money;
+            return user!.Money;
         }
     }
 }

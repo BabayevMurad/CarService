@@ -21,7 +21,7 @@ namespace CarService.DataAccess.Concrete
             var carIds = await _appDataContext.Cars.Select(c => c.Id).ToListAsync();
 
             if (carIds.Count == 0)
-                return null;
+                return null!;
 
             Random random = new Random();
             int randomId = carIds[random.Next(carIds.Count)];
@@ -32,7 +32,7 @@ namespace CarService.DataAccess.Concrete
 
             var car = new Car
             {
-                Id = selectedCar.Id,
+                Id = selectedCar!.Id,
                 Name = selectedCar.Name,
                 Year = randomYear,
                 UserId = userId,
@@ -60,7 +60,7 @@ namespace CarService.DataAccess.Concrete
 
             var issue = await _appDataContext.Issues.FirstOrDefaultAsync(i => i.Id == randomId);
 
-            return issue;
+            return issue!;
         }
 
         public async Task AddIssueToSql()
@@ -117,7 +117,7 @@ namespace CarService.DataAccess.Concrete
             {
                 var car = await _appDataContext.Cars.FirstOrDefaultAsync(c => c.Id == item.CarId);
 
-                car.UserId = item.UserId;
+                car!.UserId = item.UserId;
 
                 item.Car = car;
 
@@ -135,7 +135,7 @@ namespace CarService.DataAccess.Concrete
             {
                 var car = await _appDataContext.Cars.FirstOrDefaultAsync(c => c.Id == item.CarId);
 
-                car.UserId = item.Car.UserId;
+                car!.UserId = item.Car!.UserId;
 
                 returnCar.Add(item.Car);
             }
@@ -144,7 +144,7 @@ namespace CarService.DataAccess.Concrete
 
         public Task RemoveCarFromSevice(int id)
         {
-            var task = _appRepository.DeleteAsync(_appDataContext.Cars.FirstOrDefault(c => c.Id == id));
+            var task = _appRepository.DeleteAsync(_appDataContext.Cars.FirstOrDefault(c => c.Id == id)!);
 
             return task;
         }
@@ -152,13 +152,13 @@ namespace CarService.DataAccess.Concrete
         public async Task<Car> GetCarById(int id)
         {
             var car = await _appDataContext.Cars.FirstOrDefaultAsync(c => c.Id == id);
-            return car;
+            return car!;
         }
 
         public async Task<Issue> GetIssueById(int id)
         {
             var issue = await _appDataContext.Issues.FirstOrDefaultAsync(i => i.Id == id);
-            return issue;
+            return issue!;
         }
     }
 }

@@ -1,11 +1,8 @@
-﻿using CarService.DataAccess;
-using CarService.Entities;
+﻿using CarService.Entities;
 using Microsoft.AspNetCore.Mvc;
 using CarService.DataAccess.Abstract;
 using CarService.Entities.Dto_s;
-using System.Threading.Tasks;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace CarService.WebApi.Controllers
 {
@@ -27,9 +24,9 @@ namespace CarService.WebApi.Controllers
 
             cartAdd.Time = DateTime.Now;
 
-            await _cartController.DecreaseDetailCount(buycart.Cart.Details, cartAdd.Id);
+            await _cartController.DecreaseDetailCount(buycart.Cart.Details!, cartAdd.Id);
 
-            await _cartController.EditCartDetails(cartAdd.Id, buycart.Cart.Details);
+            await _cartController.EditCartDetails(cartAdd.Id, buycart.Cart.Details!);
 
             return Ok();
         }

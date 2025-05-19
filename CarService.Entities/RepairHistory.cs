@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CarService.Entities
+﻿namespace CarService.Entities
 {
     public class RepairHistory
     {
@@ -12,6 +6,6 @@ namespace CarService.Entities
         public int CarId { get; set; }
         public DateTime RepairDate { get; set; }
         public decimal Cost { get; set; }
-        public virtual Car Car { get; set; }
+        public virtual Car? Car { get; set; }
     }
 }

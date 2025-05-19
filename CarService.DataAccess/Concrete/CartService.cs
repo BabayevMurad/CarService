@@ -23,7 +23,7 @@ namespace CarService.DataAccess.Concrete
             {
                 var detail = await _context.Details.FirstOrDefaultAsync(d => d.Id == item.DetailId);
 
-                detail.Count -= item.Count;
+                detail!.Count -= item.Count;
 
                 if (detail.Count <= 0)
                 {
@@ -71,9 +71,7 @@ namespace CarService.DataAccess.Concrete
                 .Include(d => d.Details)
                 .FirstOrDefaultAsync(c => c.Id == id);
 
-            #pragma warning disable CS8619
-            return cart;
-            #pragma warning restore CS8619
+            return cart!;
         }
     }
 }

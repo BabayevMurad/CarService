@@ -89,7 +89,7 @@ namespace CarService.DataAccess.Concrete
         {
             var detail = await _context.Details.FirstOrDefaultAsync(d => d.Id == id);
 
-            detail.Count = detailNew.Count;
+            detail!.Count = detailNew.Count;
             detail.ImageUrl = detailNew.ImageUrl;
             detail.Name = detailNew.Name;
             detail.Price = detailNew.Price;
@@ -104,7 +104,7 @@ namespace CarService.DataAccess.Concrete
         {
             var category = await _context.Category.FirstOrDefaultAsync(c => c.Id == id);
 
-            category.Name = categoryNew.Name;
+            category!.Name = categoryNew.Name;
 
             await _context.SaveChangesAsync();
 
