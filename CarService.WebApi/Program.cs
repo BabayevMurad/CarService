@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using CarService.WebApi.Hubs;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,7 +14,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSignalR();
 builder.Services.AddSwaggerGen();
 
 var conn = builder.Configuration.GetConnectionString("Default");
@@ -28,6 +28,7 @@ builder.Services.AddScoped<ICarService, CarServiceClass>();
 builder.Services.AddScoped<ICartService, CartService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IService, ServiceClass>();
+builder.Services.AddSignalR();
 
 
 
@@ -72,5 +73,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapHub<MessageHub>("/signal");
 
 app.Run();
