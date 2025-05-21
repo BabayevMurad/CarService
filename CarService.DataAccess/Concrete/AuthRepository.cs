@@ -37,15 +37,6 @@ namespace CarService.DataAccess.Concrete
             return user;
         }
 
-        private bool VerifyPasswordHash(string password, byte[]? passwordHash, byte[]? passwordSalt)
-        {
-            using (var hmac = new HMACSHA512(passwordSalt!))
-            {
-                var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
-                return computedHash.SequenceEqual(passwordHash!);
-            }
-        }
-
         public async Task<User> Register(User user, string password)
         {
             byte[] passwordHash, passwordSalt;
@@ -67,6 +58,26 @@ namespace CarService.DataAccess.Concrete
             await _context.Admins.AddAsync(admin);
             await _context.SaveChangesAsync();
             return admin;
+        }
+
+        public async Task<Mechanic> MexhanicRegister(Mechanic mechanic, string password)
+        {
+            byte[] passwordHash, passwordSalt;
+            CreatePasswordHash(password, out passwordHash, out passwordSalt);
+            mechanic.PasswordHash = passwordHash;
+            mechanic.PasswordSalt = passwordSalt;
+            await _context.Mechanics.AddAsync(mechanic);
+            await _context.SaveChangesAsync();
+            return mechanic;
+        }
+
+        private bool VerifyPasswordHash(string password, byte[]? passwordHash, byte[]? passwordSalt)
+        {
+            using (var hmac = new HMACSHA512(passwordSalt!))
+            {
+                var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
+                return computedHash.SequenceEqual(passwordHash!);
+            }
         }
 
         private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
@@ -92,6 +103,14 @@ namespace CarService.DataAccess.Concrete
             var hasExist = await _context
                 .Admins
                 .AnyAsync(u => u.Username == username);
+            return hasExist;
+        }
+
+        public async Task<bool> MechanicExists(string username)
+        {
+            var hasExist = await _context
+                .Mechanics
+                .AnyAsync(u => u.UserName == username);
             return hasExist;
         }
     }
