@@ -9,5 +9,7 @@ namespace CarService.DataAccess.Abstract
         Task<bool> UserExists(string username);
         Task<Admin> AdminLogin(string username, string password);
         Task<Admin> AdminRegister(Admin admin, string password);
+        Task<Mechanic> MechanicLogin(string username, string password);
+        Task<Mechanic> MexhanicRegister(Mechanic mechanic, string password);
     }
 }

@@ -15,6 +15,17 @@ namespace CarService.DataAccess.Concrete
             _context = context;
         }
 
+        public async Task<User> Login(string username, string password)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.Username == username);
+            if (user == null) return null!;
+            if (!VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
+            {
+                return null!;
+            }
+            return user;
+        }
+
         public async Task<Admin> AdminLogin(string username, string password)
         {
             var admin = await _context.Admins.FirstOrDefaultAsync(x => x.Username == username);
@@ -26,15 +37,15 @@ namespace CarService.DataAccess.Concrete
             return admin;
         }
 
-        public async Task<User> Login(string username, string password)
+        public async Task<Mechanic> MechanicLogin(string username, string password)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(x => x.Username == username);
-            if (user == null) return null!;
-            if (!VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
+            var mechanic = await _context.Mechanics.FirstOrDefaultAsync(x => x.Username == username);
+            if (mechanic is null) return null!;
+            if (!VerifyPasswordHash(password, mechanic.PasswordHash, mechanic.PasswordSalt))
             {
                 return null!;
             }
-            return user;
+            return mechanic;
         }
 
         public async Task<User> Register(User user, string password)
@@ -110,7 +121,7 @@ namespace CarService.DataAccess.Concrete
         {
             var hasExist = await _context
                 .Mechanics
-                .AnyAsync(u => u.UserName == username);
+                .AnyAsync(u => u.Username == username);
             return hasExist;
         }
     }

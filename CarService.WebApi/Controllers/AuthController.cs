@@ -68,6 +68,29 @@ namespace CarService.WebApi.Controllers
             return StatusCode(StatusCodes.Status201Created);
         }
 
+        [HttpPost("RegisterMechanic")]
+        public async Task<ActionResult> RegisterMechanic([FromBody] MechanicRegisterDto dto)
+        {
+            if (await _authRepository.UserExists(dto.UserName))
+            {
+                ModelState.AddModelError("Username", "Username already exist");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var mechanicToCreate = new Mechanic
+            {
+                Username = dto.UserName,
+            };
+
+            await _authRepository.MexhanicRegister(mechanicToCreate, dto.Password);
+
+            return StatusCode(StatusCodes.Status201Created);
+        }
+
         [HttpPost("LoginUser")]
         public async Task<ActionResult> Login([FromBody] UserForLoginDto dto)
         {
@@ -133,6 +156,40 @@ namespace CarService.WebApi.Controllers
                 token = tokenString,
                 id = admin.Id,
                 username = admin.Username
+            });
+        }
+
+        [HttpPost("LoginMechanic")]
+        public async Task<ActionResult> MechanicLogin([FromBody] MechanicLoginDto dto)
+        {
+            var mechanic = await _authRepository.MechanicLogin(dto.UserName, dto.Password);
+            if (mechanic is null)
+            {
+                return Unauthorized();
+            }
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+
+            var key = Encoding.ASCII.GetBytes(_configuration.GetSection("AppSettings:Token").Value!);
+
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new Claim[]
+                {
+                    new Claim(ClaimTypes.NameIdentifier,mechanic.Id.ToString()),
+                    new Claim(ClaimTypes.Name,mechanic.Username)
+                }),
+                Expires = DateTime.Now.AddDays(1),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha512Signature)
+            };
+
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            var tokenString = tokenHandler.WriteToken(token);
+            return Ok(new
+            {
+                token = tokenString,
+                id = mechanic.Id,
+                username = mechanic.Username
             });
         }
     }

@@ -63,6 +63,7 @@ namespace CarService.WebApi.Hubs
                     .SendAsync("ReceivePrivateMessage", fromKey, message);
             }
         }
+
         private async Task<int> GetUserIdFromDb(string username, string role)
         {
             if (role == "user")
@@ -86,6 +87,20 @@ namespace CarService.WebApi.Hubs
             }
 
             return 0;
+        }
+
+        public async Task SendNotification(string toKey, string notification)
+        {
+            if (string.IsNullOrWhiteSpace(toKey))
+            {
+                await Clients.All.SendAsync("ReceiveNotification", notification);
+                return;
+            }
+
+            if (ConnectedUsers.TryGetValue(toKey, out var targetConnId))
+            {
+                await Clients.Client(targetConnId).SendAsync("ReceiveNotification", notification);
+            }
         }
     }
 }
