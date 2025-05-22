@@ -62,6 +62,16 @@ namespace CarService.DataAccess.Concrete
 
         public async Task AddToDatabase(AdminChatUsers chatUsers)
         {
+            var chats = await _context.AdminChatUsers.ToListAsync();
+
+            foreach (var item in chats)
+            {
+                if (item.UserId == chatUsers.UserId)
+                {
+                    return;
+                }
+            }
+
             _context.AdminChatUsers.Add(chatUsers);
 
             await _context.SaveChangesAsync();
