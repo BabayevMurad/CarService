@@ -54,7 +54,8 @@ namespace CarService.DataAccess.Concrete
 
             if(minCountAdminId == -1)
             {
-                minCountAdminId = _context.Admins.FirstAsync().Id;
+                var firstAdmin = await _context.Admins.FirstAsync();
+                minCountAdminId = firstAdmin.Id;
             }
 
             return minCountAdminId;
