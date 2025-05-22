@@ -28,6 +28,7 @@ builder.Services.AddScoped<ICarService, CarServiceClass>();
 builder.Services.AddScoped<ICartService, CartService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IService, ServiceClass>();
+builder.Services.AddScoped<IAddUserToAdmin, AddUserToAdmin>();
 builder.Services.AddSignalR();
 
 

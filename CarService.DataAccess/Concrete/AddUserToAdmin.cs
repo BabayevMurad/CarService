@@ -1,4 +1,5 @@
 ﻿using CarService.DataAccess.Abstract;
+using CarService.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace CarService.DataAccess.Concrete
@@ -56,6 +57,27 @@ namespace CarService.DataAccess.Concrete
             }
 
             return minCountAdminId;
+        }
+
+        public async Task AddToDatabase(AdminChatUsers chatUsers)
+        {
+            _context.AdminChatUsers.Add(chatUsers);
+
+            await _context.SaveChangesAsync();
+
+        }
+
+        public async Task DeleteUserFromChat(int userId)
+        {
+            var userToAdd = await _context.Users.FirstOrDefaultAsync(x => x.Id == userId);
+
+            var userAdminChatList = await _context.AdminChatUsers.ToListAsync();
+
+            var userToDelete = userAdminChatList.FirstOrDefault(x => x.UserId == userId);
+
+            _context.AdminChatUsers.Remove(userToDelete!);
+
+            await _context.SaveChangesAsync();
         }
     }
 }
