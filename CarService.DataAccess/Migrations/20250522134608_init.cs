@@ -18,6 +18,7 @@ namespace CarService.DataAccess.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Username = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsOnline = table.Column<bool>(type: "bit", nullable: false),
                     PasswordHash = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
                     PasswordSalt = table.Column<byte[]>(type: "varbinary(max)", nullable: true)
                 },
@@ -82,6 +83,24 @@ namespace CarService.DataAccess.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Issues", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Mechanics",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Surname = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    WorkType = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Username = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PasswordHash = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    PasswordSalt = table.Column<byte[]>(type: "varbinary(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Mechanics", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -196,6 +215,42 @@ namespace CarService.DataAccess.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "AdminChatUsers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    AdminId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AdminChatUsers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AdminChatUsers_Admins_AdminId",
+                        column: x => x.AdminId,
+                        principalTable: "Admins",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AdminChatUsers_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AdminChatUsers_AdminId",
+                table: "AdminChatUsers",
+                column: "AdminId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AdminChatUsers_UserId",
+                table: "AdminChatUsers",
+                column: "UserId");
+
             migrationBuilder.CreateIndex(
                 name: "IX_CarsRepair_CarId",
                 table: "CarsRepair",
@@ -226,7 +281,7 @@ namespace CarService.DataAccess.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Admins");
+                name: "AdminChatUsers");
 
             migrationBuilder.DropTable(
                 name: "CarsRepair");
@@ -238,7 +293,13 @@ namespace CarService.DataAccess.Migrations
                 name: "Details");
 
             migrationBuilder.DropTable(
+                name: "Mechanics");
+
+            migrationBuilder.DropTable(
                 name: "RepairHistories");
+
+            migrationBuilder.DropTable(
+                name: "Admins");
 
             migrationBuilder.DropTable(
                 name: "Users");

@@ -21,6 +21,7 @@ namespace CarService.DataAccess
         public DbSet<CarRepair> CarsRepair { get; set; }
         public DbSet<RepairHistory> RepairHistories { get; set; }
         public DbSet<Mechanic> Mechanics { get; set; }
+        public DbSet<AdminChatUsers> AdminChatUsers { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

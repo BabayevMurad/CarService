@@ -192,5 +192,17 @@ namespace CarService.WebApi.Controllers
                 username = mechanic.Username
             });
         }
+
+        [HttpPost("LogoutAdmin")]
+        public async Task<ActionResult> AdminLogout([FromBody] AdminForLogin dto)
+        {
+            var admin = await _authRepository.AdminLogout(dto.Username, dto.Password);
+            if (admin is null)
+            {
+                return Unauthorized();
+            }
+
+            return Ok();
+        }
     }
 }

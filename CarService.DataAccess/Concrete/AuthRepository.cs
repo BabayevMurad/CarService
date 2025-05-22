@@ -34,6 +34,21 @@ namespace CarService.DataAccess.Concrete
             {
                 return null!;
             }
+            admin.IsOnline = true;
+            await _context.SaveChangesAsync();
+            return admin;
+        }
+
+        public async Task<Admin> AdminLogout(string username, string password)
+        {
+            var admin = await _context.Admins.FirstOrDefaultAsync(x => x.Username == username);
+            if (admin is null) return null!;
+            if (!VerifyPasswordHash(password, admin.PasswordHash, admin.PasswordSalt))
+            {
+                return null!;
+            }
+            admin.IsOnline = false;
+            await _context.SaveChangesAsync();
             return admin;
         }
 
