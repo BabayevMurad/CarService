@@ -48,12 +48,27 @@ namespace CarService.WebApi.Hubs
 
         }
 
+        //public async Task SendPrivateMessage(string fromKey, string toKey, string message)
+        //{
+        //    if (ConnectedUsers.TryGetValue(toKey, out var targetConnId))
+        //    {
+        //        await Clients.Client(targetConnId)
+
+        //            .SendAsync("ReceivePrivateMessage", fromKey, message);
+        //    }
+
+        //    if (ConnectedUsers.TryGetValue(fromKey, out var senderConnId))
+        //    {
+        //        await Clients.Client(senderConnId)
+        //            .SendAsync("ReceivePrivateMessage", fromKey, message);
+        //    }
+        //}
+
         public async Task SendPrivateMessage(string fromKey, string toKey, string message)
         {
             if (ConnectedUsers.TryGetValue(toKey, out var targetConnId))
             {
                 await Clients.Client(targetConnId)
-
                     .SendAsync("ReceivePrivateMessage", fromKey, message);
             }
 

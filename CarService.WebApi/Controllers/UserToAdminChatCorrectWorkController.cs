@@ -32,12 +32,26 @@ namespace CarService.WebApi.Controllers
             return Ok(id);
         }
 
+        [HttpGet("GetUserList")]
+        public async Task<ActionResult<List<User>>> GetUserList(int id)
+        {
+            var userList = await _addUserToAdmin.GetUserList(id);
+            return Ok(userList);
+        }
+
         [HttpPost("EndChat")]
         public async Task<ActionResult<int>> EndChat([FromBody] AddUserToAdminDto add)
         {
             await _addUserToAdmin.DeleteUserFromChat(add.userId);
 
             return Ok();
+        }
+
+        [HttpGet("GetAdmin")]
+        public async Task<ActionResult<Admin>> GetAdmin(int id)
+        {
+            var admin = await _addUserToAdmin.GetAdmin(id);
+            return Ok(admin);
         }
     }
 }

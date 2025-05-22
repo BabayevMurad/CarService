@@ -1,5 +1,6 @@
 ﻿using CarService.DataAccess.Abstract;
 using CarService.Entities;
+using CarService.Entities.Dto_s;
 using Microsoft.EntityFrameworkCore;
 
 namespace CarService.DataAccess.Concrete
@@ -78,6 +79,31 @@ namespace CarService.DataAccess.Concrete
             _context.AdminChatUsers.Remove(userToDelete!);
 
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<List<User>> GetUserList(int id)
+        {
+            var userAdminChatList = await _context.AdminChatUsers.ToListAsync();
+
+            var users = new List<User>();
+
+            foreach (var both in userAdminChatList)
+            {
+                if (both.AdminId == id)
+                {
+                    await _context.Users.FirstOrDefaultAsync(x => x.Id == both.UserId);
+
+                    users.Add(both.User!);
+                }
+            }
+
+            return users;
+        }
+
+        public async Task<Admin> GetAdmin(int id)
+        {
+            var user = await _context.Admins.FirstOrDefaultAsync(x => x.Id == id);
+            return user!;
         }
     }
 }
