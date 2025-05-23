@@ -87,7 +87,7 @@ namespace CarService.WebApi.Controllers
                 Name = dto.Name,
                 Surname = dto.Surname,
                 WorkType = dto.WorkType,
-                IsAccepted = dto.IsAccepted, 
+                IsAccepted = false, 
             };
 
             await _authRepository.MexhanicRegister(mechanicToCreate, dto.Password);

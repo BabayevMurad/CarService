@@ -13,8 +13,6 @@ namespace CarService.Entities.Dto_s
         [Required]
         public string Username { get; set; }
         [Required]
-        public bool IsAccepted { get; set; } = false;
-        [Required]
         public string Password { get; set; }
     }
 }
