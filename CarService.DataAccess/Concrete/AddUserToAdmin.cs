@@ -30,7 +30,7 @@ namespace CarService.DataAccess.Concrete
 
                 for (int j = 0; j < userAdminChatList.Count; j++)
                 {
-                    if (userAdminChatList[j].UserId == admins[i].Id)
+                    if (userAdminChatList[j].AdminId == admins[i].Id)
                     {
                         count++;
                     }
