@@ -29,17 +29,17 @@ namespace CarService.WebApi.Controllers
             return Ok();
         }
 
-        [HttpGet("GetAllMechanics")]
-        public async Task<ActionResult<List<MechanicAcceptDto>>> GetAllMechanics()
-        {
-            var mechanics = await _mechanicAddWork.GetAllMechanics();
-            //var mechanicAcceptDtos = mechanics.Select(m => new MechanicAcceptDto
-            //{
-            //    Id = m.Id,
-            //    Username = m.Username
-            //}).ToList();
+        //[HttpGet("GetAllMechanics")]
+        //public async Task<ActionResult<List<MechanicAcceptDto>>> GetAllMechanics()
+        //{
+        //    var mechanics = await _mechanicAddWork.GetAllMechanics();
+        //    //var mechanicAcceptDtos = mechanics.Select(m => new MechanicAcceptDto
+        //    //{
+        //    //    Id = m.Id,
+        //    //    Username = m.Username
+        //    //}).ToList();
 
-            return Ok(mechanicAcceptDtos);
-        }
+        //    //return Ok(mechanicAcceptDtos);
+        //}
     }
 }
