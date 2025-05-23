@@ -8,7 +8,7 @@ namespace CarService.DataAccess.Abstract
         Task<int> GetAddmin(int userId);
         Task AddToDatabase(AdminChatUsers chatUsers);
         Task DeleteUserFromChat(int userId);
-        Task<List<ReturnUserDto>> GetUserList(int id)
+        Task<List<ReturnUserDto>> GetUserList(int id);
         Task<Admin> GetAdmin(int id);
     }
 }
