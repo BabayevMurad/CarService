@@ -12,5 +12,6 @@ namespace CarService.DataAccess.Abstract
         Task<Mechanic> MechanicLogin(string username, string password);
         Task<Mechanic> MexhanicRegister(Mechanic mechanic, string password);
         Task<Admin> AdminLogout(string username, string password);
+        Task<Mechanic> AcceptedMechanicLogin(string username, string password);
     }
 }

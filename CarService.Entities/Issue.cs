@@ -7,7 +7,7 @@
         public string Level { get; set; }
         public string Problem { get; set; }
         public string Description { get; set; }
-
+        public string WorkType { get; set; }
         #pragma warning restore CS8618
     }
 }

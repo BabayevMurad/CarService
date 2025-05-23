@@ -9,6 +9,7 @@
         public string WorkType { get; set; }
         public string Username { get; set; }
         #pragma warning restore CS8618
+        public bool IsAccepted { get; set; } = false;
         public byte[]? PasswordHash { get; set; }
         public byte[]? PasswordSalt { get; set; }
     }

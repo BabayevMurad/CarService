@@ -193,6 +193,40 @@ namespace CarService.WebApi.Controllers
             });
         }
 
+        [HttpPost("AcceptedMechanicLogin")]
+        public async Task<ActionResult> AcceptedMechanicLogin([FromBody] MechanicLoginDto dto)
+        {
+            var mechanic = await _authRepository.MechanicLogin(dto.UserName, dto.Password);
+            if (mechanic is null)
+            {
+                return Unauthorized();
+            }
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+
+            var key = Encoding.ASCII.GetBytes(_configuration.GetSection("AppSettings:Token").Value!);
+
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new Claim[]
+                {
+                    new Claim(ClaimTypes.NameIdentifier,mechanic.Id.ToString()),
+                    new Claim(ClaimTypes.Name,mechanic.Username)
+                }),
+                Expires = DateTime.Now.AddDays(1),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha512Signature)
+            };
+
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            var tokenString = tokenHandler.WriteToken(token);
+            return Ok(new
+            {
+                token = tokenString,
+                id = mechanic.Id,
+                username = mechanic.Username
+            });
+        }
+
         [HttpPost("LogoutAdmin")]
         public async Task<ActionResult> AdminLogout([FromBody] AdminForLogin dto)
         {

@@ -38,10 +38,11 @@ namespace CarService.DataAccess.Concrete
             return issue!.Issue!;
         }
 
-        public async Task<Car> GetCarForRepair()
+        public async Task<Car> GetCarForRepair(string workType)
         {
-            var car = await _context.CarsRepair.
-                Include(c => c.Car)
+            var car = await _context.CarsRepair
+                .Where(c => c.Issue!.WorkType == workType)
+                .Include(c => c.Car)
                 .FirstAsync();
 
             return car.Car!;

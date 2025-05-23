@@ -1,7 +1,6 @@
 ﻿using CarService.DataAccess.Abstract;
 using CarService.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage.Json;
 
 namespace CarService.DataAccess.Concrete
 {
@@ -67,21 +66,21 @@ namespace CarService.DataAccess.Concrete
         {
             List<Issue> list = new List<Issue>
             {
-                new Issue { Level= "Easy"         , Problem= "Flat Tire"             , Description= "The tire loses air pressure and needs replacement."          },
-                new Issue { Level= "Easy"         , Problem= "Oil Change"            , Description= "The engine oil needs to be changed regularly."               },
-                new Issue { Level= "Easy"         , Problem= "Air Filter Replacement", Description= "The air filter is dirty and needs replacement."              },
-                new Issue { Level= "Easy"         , Problem= "Battery Replacement"   , Description= "The battery is dead and requires replacement."               },
-                new Issue { Level= "Easy"         , Problem= "Wiper Blade Change"    , Description= "The wiper blades are worn out and need changing."            },
-                new Issue { Level= "Medium"       , Problem= "Brake Pad Replacement" , Description= "Brake pads are worn and need replacement."                   },
-                new Issue { Level= "Medium"       , Problem= "Coolant Leak Repair"   , Description= "Coolant system is leaking and requires repair."              },
-                new Issue { Level= "Medium"       , Problem= "Spark Plug Replacement", Description= "Spark plugs are faulty and need changing."                   },
-                new Issue { Level= "Medium"       , Problem= "Wheel Alignment"       , Description= "Wheels need realignment to fix steering issues."             },
-                new Issue { Level= "Medium"       , Problem= "Headlight Replacement" , Description= "The headlights are broken or burnt out."                     },
-                new Issue { Level= "Difficult"    , Problem= "Transmission Failure"  , Description= "Transmission system is failing completely."                  },
-                new Issue { Level= "Difficult"    , Problem= "Engine Overheating"    , Description= "Engine overheats and may be seriously damaged."              },
-                new Issue { Level= "Difficult"    , Problem= "Timing Belt Failure"   , Description= "Timing belt has broken and engine synchronization is lost."  },
-                new Issue { Level= "Difficult"    , Problem= "Fuel Pump Failure"     , Description= "Fuel pump has failed, causing fuel delivery issues."         },
-                new Issue { Level= "Difficult"    , Problem= "Clutch System Failure" , Description= "Clutch has completely failed and needs full replacement."    },
+                new Issue { Level= "Easy"      , Problem= "Flat Tire"              , Description= "The tire loses air pressure and needs replacement."         , WorkType = "Tire"                 },
+                new Issue { Level= "Easy"      , Problem= "Oil Change"             , Description= "The engine oil needs to be changed regularly."              , WorkType = "General"              },
+                new Issue { Level= "Easy"      , Problem= "Air Filter Replacement" , Description= "The air filter is dirty and needs replacement."             , WorkType = "General"              },
+                new Issue { Level= "Easy"      , Problem= "Battery Replacement"    , Description= "The battery is dead and requires replacement."              , WorkType = "General"              },
+                new Issue { Level= "Easy"      , Problem= "Wiper Blade Change"     , Description= "The wiper blades are worn out and need changing."           , WorkType = "General"              },
+                new Issue { Level= "Medium"    , Problem= "Brake Pad Replacement"  , Description= "Brake pads are worn and need replacement."                  , WorkType = "Brake And Suspension" },
+                new Issue { Level= "Medium"    , Problem= "Coolant Leak Repair"    , Description= "Coolant system is leaking and requires repair."             , WorkType = "General"              },
+                new Issue { Level= "Medium"    , Problem= "Spark Plug Replacement" , Description= "Spark plugs are faulty and need changing."                  , WorkType = "General"              },
+                new Issue { Level= "Medium"    , Problem= "Wheel Alignment"        , Description= "Wheels need realignment to fix steering issues."            , WorkType = "Brake And Suspension" },
+                new Issue { Level= "Medium"    , Problem= "Headlight Replacement"  , Description= "The headlights are broken or burnt out."                    , WorkType = "General"              },
+                new Issue { Level= "Difficult" , Problem= "Transmission Failure"   , Description= "Transmission system is failing completely."                 , WorkType = "Transmission"         },
+                new Issue { Level= "Difficult" , Problem= "Engine Overheating"     , Description= "Engine overheats and may be seriously damaged."             , WorkType = "Engine"               },
+                new Issue { Level= "Difficult" , Problem= "Timing Belt Failure"    , Description= "Timing belt has broken and engine synchronization is lost." , WorkType = "Engine"               },
+                new Issue { Level= "Difficult" , Problem= "Fuel Pump Failure"      , Description= "Fuel pump has failed, causing fuel delivery issues."        , WorkType = "Electrician"          },
+                new Issue { Level= "Difficult" , Problem= "Clutch System Failure"  , Description= "Clutch has completely failed and needs full replacement."   , WorkType = "Transmission"         },
             };
 
             foreach (var item in list)

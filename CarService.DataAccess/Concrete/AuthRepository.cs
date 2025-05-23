@@ -63,6 +63,18 @@ namespace CarService.DataAccess.Concrete
             return mechanic;
         }
 
+        public async Task<Mechanic> AcceptedMechanicLogin(string username, string password)
+        {
+            var mechanic = await _context.Mechanics.FirstOrDefaultAsync(x => x.Username == username);
+            if (mechanic is null) return null!;
+            if (!mechanic.IsAccepted) return null!;
+            if (!VerifyPasswordHash(password, mechanic.PasswordHash, mechanic.PasswordSalt))
+            {
+                return null!;
+            }
+            return mechanic;
+        }
+
         public async Task<User> Register(User user, string password)
         {
             byte[] passwordHash, passwordSalt;
