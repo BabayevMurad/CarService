@@ -33,10 +33,10 @@ namespace CarService.WebApi.Controllers
         }
 
         [HttpGet("GetUserList/{id}")]
-        public async Task<ActionResult<List<User>>> GetUserList(int id)
+        public async Task<List<User>> GetUserList(int id)
         {
             var userList = await _addUserToAdmin.GetUserList(id);
-            return Ok(userList);
+            return userList;
         }
 
         [HttpPost("EndChat")]
