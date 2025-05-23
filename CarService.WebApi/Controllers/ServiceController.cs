@@ -18,10 +18,10 @@ namespace CarService.WebApi.Controllers
             _service = service;
         }
 
-        [HttpGet("GetCar")]
-        public async Task<Car> GetCar()
+        [HttpGet("GetCar/{workType}")]
+        public async Task<Car> GetCar(string workType)
         {
-             return await _service.GetCarForRepair();
+             return await _service.GetCarForRepair(workType);
         }
 
         [HttpGet("GetCarIssue")]
