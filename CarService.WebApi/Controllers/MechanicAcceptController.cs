@@ -1,4 +1,5 @@
 ﻿using CarService.DataAccess.Abstract;
+using CarService.Entities;
 using CarService.Entities.Dto_s;
 using Microsoft.AspNetCore.Mvc;
 
@@ -51,5 +52,38 @@ namespace CarService.WebApi.Controllers
 
             return Ok(mechanics);
         }
+
+        [HttpGet("GetMechanicById/{id}")]
+        public async Task<ActionResult<MechanicDto>> GetMechanicById(int id)
+        {
+            var mechanics = await _mechanicAddWork.GetMechanicById(id);
+
+            var mechanicDto = new MechanicDto
+            {
+                Id = mechanics.Id,
+                Username = mechanics.Username,
+                WorkType = mechanics.WorkType,
+                IsAccepted = mechanics.IsAccepted
+            };
+
+            return Ok(mechanics);
+        }
+
+        [HttpPost("AddInfoMechanic")]
+        public async Task<ActionResult> AddInfoMechanic([FromBody] MechanicDto mechanicDto)
+        {
+            await _mechanicAddWork.AddInfoMenhanic(new Mechanic
+            {
+                Id = mechanicDto.Id,
+                Name = mechanicDto.Name,
+                Surname = mechanicDto.Surname,
+                WorkType = mechanicDto.WorkType,
+                Username = mechanicDto.Username,
+                IsAccepted = mechanicDto.IsAccepted
+            });
+
+            return Ok();
+        }
+
     }
 }
