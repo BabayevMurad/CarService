@@ -1,4 +1,5 @@
 ﻿using CarService.Entities;
+using CarService.Entities.Dto_s;
 
 namespace CarService.DataAccess.Abstract
 {
@@ -7,7 +8,7 @@ namespace CarService.DataAccess.Abstract
         Task<int> GetAddmin(int userId);
         Task AddToDatabase(AdminChatUsers chatUsers);
         Task DeleteUserFromChat(int userId);
-        Task<List<User>> GetUserList(int id);
+        Task<List<ReturnUserDto>> GetUserList(int id)
         Task<Admin> GetAdmin(int id);
     }
 }

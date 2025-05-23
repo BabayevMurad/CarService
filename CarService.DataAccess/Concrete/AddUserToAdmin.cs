@@ -92,11 +92,11 @@ namespace CarService.DataAccess.Concrete
             await _context.SaveChangesAsync();
         }
 
-        public async Task<List<User>> GetUserList(int id)
+        public async Task<List<ReturnUserDto>> GetUserList(int id)
         {
             var userAdminChatList = await _context.AdminChatUsers.ToListAsync();
 
-            var users = new List<User>();
+            var users = new List<ReturnUserDto>();
 
             foreach (var both in userAdminChatList)
             {
@@ -104,7 +104,13 @@ namespace CarService.DataAccess.Concrete
                 {
                     await _context.Users.FirstOrDefaultAsync(x => x.Id == both.UserId);
 
-                    users.Add(both.User!);
+                    var add = new ReturnUserDto()
+                    {
+                        Id = both.User!.Id,
+                        Username = both.User!.Username,
+                    };
+
+                    users.Add(add);
                 }
             }
 
