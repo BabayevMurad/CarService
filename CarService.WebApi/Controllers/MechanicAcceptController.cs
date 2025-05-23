@@ -23,6 +23,7 @@ namespace CarService.WebApi.Controllers
             return Ok();
         }
 
+        [HttpPost("RejectToWork")]
         public async Task<ActionResult> RejectToWork([FromBody] MechanicAcceptDto mechanicAccept)
         {
             await _mechanicAddWork.RejectMechanic(mechanicAccept.Id);
