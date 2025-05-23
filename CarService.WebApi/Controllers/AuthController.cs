@@ -48,7 +48,7 @@ namespace CarService.WebApi.Controllers
         [HttpPost("RegisterAdmin")]
         public async Task<ActionResult> RegisterAdmin([FromBody] AdminForRegister dto)
         {
-            if (await _authRepository.UserExists(dto.Username))
+            if (await _authRepository.AdminExists(dto.Username))
             {
                 ModelState.AddModelError("Username", "Username already exist");
             }
@@ -71,7 +71,7 @@ namespace CarService.WebApi.Controllers
         [HttpPost("RegisterMechanic")]
         public async Task<ActionResult> RegisterMechanic([FromBody] MechanicRegisterDto dto)
         {
-            if (await _authRepository.UserExists(dto.UserName))
+            if (await _authRepository.MechanicExists(dto.UserName))
             {
                 ModelState.AddModelError("Username", "Username already exist");
             }
