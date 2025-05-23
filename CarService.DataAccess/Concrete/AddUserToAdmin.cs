@@ -39,16 +39,29 @@ namespace CarService.DataAccess.Concrete
                 sub.Add(admins[i].Id, count);
             }
 
+            var maxCount = 0;
+            var maxCountAdminId = -1;
             var minCount = 0;
             var minCountAdminId = -1;
 
-
             foreach (var admin in sub)
             {
-                if (admin.Value < minCount)
+                if (admin.Value > maxCount)
                 {
-                    minCount = admin.Value;
-                    minCountAdminId = admin.Key;
+                    maxCount = admin.Value;
+                    maxCountAdminId = admin.Key;
+                }
+            }
+
+            if (!(maxCount == 0 && maxCountAdminId == -1))
+            {
+                foreach (var admin in sub)
+                {
+                    if (admin.Value <= minCount)
+                    {
+                        minCount = admin.Value;
+                        minCountAdminId = admin.Key;
+                    }
                 }
             }
 
