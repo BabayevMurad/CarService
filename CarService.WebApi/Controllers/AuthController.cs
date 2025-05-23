@@ -50,12 +50,7 @@ namespace CarService.WebApi.Controllers
         {
             if (await _authRepository.AdminExists(dto.Username))
             {
-                ModelState.AddModelError("Username", "Username already exist");
-            }
-
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
+                return Conflict(new { message = "Username already exists" });
             }
 
             var adminToCreate = new Admin
@@ -73,12 +68,7 @@ namespace CarService.WebApi.Controllers
         {
             if (await _authRepository.MechanicExists(dto.Username))
             {
-                ModelState.AddModelError("Username", "Username already exist");
-            }
-
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
+                return Conflict(new { message = "Username already exists" });
             }
 
             var mechanicToCreate = new Mechanic
@@ -87,7 +77,7 @@ namespace CarService.WebApi.Controllers
                 Name = dto.Name,
                 Surname = dto.Surname,
                 WorkType = dto.WorkType,
-                IsAccepted = false, 
+                IsAccepted = false
             };
 
             await _authRepository.MexhanicRegister(mechanicToCreate, dto.Password);
