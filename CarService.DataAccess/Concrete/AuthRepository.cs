@@ -89,6 +89,8 @@ namespace CarService.DataAccess.Concrete
 
         public async Task<Admin> AdminRegister(Admin admin, string password)
         {
+            if (await AdminExists(admin.Username))
+                return null!;
             byte[] passwordHash, passwordSalt;
             CreatePasswordHash(password, out passwordHash, out passwordSalt);
             admin.PasswordHash = passwordHash;
@@ -100,6 +102,8 @@ namespace CarService.DataAccess.Concrete
 
         public async Task<Mechanic> MexhanicRegister(Mechanic mechanic, string password)
         {
+            if(await MechanicExists(mechanic.Username))
+                return null!;
             byte[] passwordHash, passwordSalt;
             CreatePasswordHash(password, out passwordHash, out passwordSalt);
             mechanic.PasswordHash = passwordHash;

@@ -15,12 +15,31 @@ namespace CarService.WebApi.Controllers
             _mechanicAddWork = mechanicAddWork;
         }
 
-        [HttpPost]
+        [HttpPost("GetToWork")]
         public async Task<ActionResult> GetToWork([FromBody] MechanicAcceptDto mechanicAccept)
         {
             await _mechanicAddWork.AcceptMechanic(mechanicAccept.Id);
 
             return Ok();
+        }
+
+        public async Task<ActionResult> RejectToWork([FromBody] MechanicAcceptDto mechanicAccept)
+        {
+            await _mechanicAddWork.RejectMechanic(mechanicAccept.Id);
+            return Ok();
+        }
+
+        [HttpGet("GetAllMechanics")]
+        public async Task<ActionResult<List<MechanicAcceptDto>>> GetAllMechanics()
+        {
+            var mechanics = await _mechanicAddWork.GetAllMechanics();
+            //var mechanicAcceptDtos = mechanics.Select(m => new MechanicAcceptDto
+            //{
+            //    Id = m.Id,
+            //    Username = m.Username
+            //}).ToList();
+
+            return Ok(mechanicAcceptDtos);
         }
     }
 }

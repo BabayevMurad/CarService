@@ -1,7 +1,13 @@
-﻿namespace CarService.DataAccess.Abstract
+﻿using CarService.Entities;
+
+namespace CarService.DataAccess.Abstract
 {
     public interface IMechanicAddWork
     {
         Task AcceptMechanic(int id);
+        Task RejectMechanic(int id);
+        Task<List<Mechanic>> GetAllMechanics();
+        Task<Mechanic> GetMechanicById(int id);
+        Task AddInfoMenhanic(Mechanic mechanic);
     }
 }
