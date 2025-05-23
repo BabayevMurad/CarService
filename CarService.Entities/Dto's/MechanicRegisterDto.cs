@@ -1,10 +1,20 @@
-﻿namespace CarService.Entities.Dto_s
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace CarService.Entities.Dto_s
 {
     public class MechanicRegisterDto
     {
-        #pragma warning disable CS8618
-        public string UserName { get; set; }
+        [Required]
+        public string Name { get; set; }
+        [Required]
+        public string Surname { get; set; }
+        [Required]
+        public string WorkType { get; set; }
+        [Required]
+        public string Username { get; set; }
+        [Required]
+        public bool IsAccepted { get; set; } = false;
+        [Required]
         public string Password { get; set; }
-        #pragma warning restore CS8618
     }
 }

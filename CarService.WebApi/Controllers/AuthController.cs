@@ -71,7 +71,7 @@ namespace CarService.WebApi.Controllers
         [HttpPost("RegisterMechanic")]
         public async Task<ActionResult> RegisterMechanic([FromBody] MechanicRegisterDto dto)
         {
-            if (await _authRepository.MechanicExists(dto.UserName))
+            if (await _authRepository.MechanicExists(dto.Username))
             {
                 ModelState.AddModelError("Username", "Username already exist");
             }
@@ -83,7 +83,11 @@ namespace CarService.WebApi.Controllers
 
             var mechanicToCreate = new Mechanic
             {
-                Username = dto.UserName,
+                Username = dto.Username,
+                Name = dto.Name,
+                Surname = dto.Surname,
+                WorkType = dto.WorkType,
+                IsAccepted = dto.IsAccepted, 
             };
 
             await _authRepository.MexhanicRegister(mechanicToCreate, dto.Password);
@@ -162,7 +166,7 @@ namespace CarService.WebApi.Controllers
         [HttpPost("LoginMechanic")]
         public async Task<ActionResult> MechanicLogin([FromBody] MechanicLoginDto dto)
         {
-            var mechanic = await _authRepository.MechanicLogin(dto.UserName, dto.Password);
+            var mechanic = await _authRepository.MechanicLogin(dto.Username, dto.Password);
             if (mechanic is null)
             {
                 return Unauthorized();
@@ -196,7 +200,7 @@ namespace CarService.WebApi.Controllers
         [HttpPost("AcceptedMechanicLogin")]
         public async Task<ActionResult> AcceptedMechanicLogin([FromBody] MechanicLoginDto dto)
         {
-            var mechanic = await _authRepository.MechanicLogin(dto.UserName, dto.Password);
+            var mechanic = await _authRepository.MechanicLogin(dto.Username, dto.Password);
             if (mechanic is null)
             {
                 return Unauthorized();
