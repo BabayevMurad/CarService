@@ -1,7 +1,9 @@
-﻿using CarService.DataAccess.Abstract;
+﻿using CarService.DataAccess;
+using CarService.DataAccess.Abstract;
 using CarService.Entities;
 using CarService.Entities.Dto_s;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace CarService.WebApi.Controllers
 {
@@ -10,10 +12,12 @@ namespace CarService.WebApi.Controllers
     public class MechanicAcceptController : ControllerBase
     {
         private readonly IMechanicAddWork _mechanicAddWork;
+        private readonly AppDataContext _context;
 
-        public MechanicAcceptController(IMechanicAddWork mechanicAddWork)
+        public MechanicAcceptController(IMechanicAddWork mechanicAddWork, AppDataContext context)
         {
             _mechanicAddWork = mechanicAddWork;
+            _context = context;
         }
 
         [HttpPost("GetToWork")]
@@ -85,5 +89,18 @@ namespace CarService.WebApi.Controllers
             return Ok();
         }
 
+        [HttpGet("GetMechanicByUsername/{username}")]
+        public async Task<ActionResult> GetMechanicByUsername(string username)
+        {
+            var user = await _context.Mechanics.FirstOrDefaultAsync(m => m.Username == username);
+            if (user == null) return NotFound();
+
+            return Ok(new
+            {
+                name = user.Name,
+                surname = user.Surname,
+                workType = user.WorkType
+            });
+        }
     }
 }
