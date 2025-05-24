@@ -121,7 +121,8 @@ namespace CarService.WebApi.Controllers
             {
                 name = user.Name,
                 surname = user.Surname,
-                workType = user.WorkType
+                workType = user.WorkType,
+                isAccepted = user.IsAccepted
             });
         }
 

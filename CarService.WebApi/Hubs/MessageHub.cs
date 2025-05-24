@@ -69,13 +69,13 @@ namespace CarService.WebApi.Hubs
             if (ConnectedUsers.TryGetValue(toKey, out var targetConnId))
             {
                 await Clients.Client(targetConnId)
-                    .SendAsync("ReceivePrivateMessage", fromKey, message);
+                    .SendAsync("ReceivePrivateMessage", fromKey, toKey, message);
             }
 
             if (ConnectedUsers.TryGetValue(fromKey, out var senderConnId))
             {
                 await Clients.Client(senderConnId)
-                    .SendAsync("ReceivePrivateMessage", fromKey, message);
+                    .SendAsync("ReceivePrivateMessage", fromKey, toKey, message);
             }
         }
 
@@ -106,15 +106,9 @@ namespace CarService.WebApi.Hubs
 
         public async Task SendNotification(string toKey, string notification)
         {
-            if (string.IsNullOrWhiteSpace(toKey))
-            {
-                await Clients.All.SendAsync("ReceiveNotification", notification);
-                return;
-            }
-
             if (ConnectedUsers.TryGetValue(toKey, out var targetConnId))
             {
-                await Clients.Client(targetConnId).SendAsync("ReceiveNotification", notification);
+                await Clients.Client(targetConnId).SendAsync("ReceiveNotification", toKey, notification);
             }
         }
     }
