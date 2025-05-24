@@ -124,5 +124,23 @@ namespace CarService.WebApi.Controllers
                 workType = user.WorkType
             });
         }
+
+        [HttpGet("GetMechanicStar/{id}")]
+        public async Task<int> GetMechanicStar(int id)
+        {
+            var mechanic = await _context.Mechanics.FirstOrDefaultAsync(m => m.Id == id);
+            if (mechanic!.WorkYear > 0 && mechanic.WorkYear < 3)
+                return 1;
+            else if (mechanic.WorkYear >= 3 && mechanic.WorkYear < 5)
+                return 2;
+            else if (mechanic.WorkYear >= 5 && mechanic.WorkYear < 10)
+                return 3;
+            else if (mechanic.WorkYear >= 10 && mechanic.WorkYear < 15)
+                return 4;
+            else if (mechanic.WorkYear >= 15)
+                return 5;
+            else
+                return 0; // Default case if no conditions are met
+        }
     }
 }
