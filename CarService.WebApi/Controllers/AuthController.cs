@@ -183,7 +183,11 @@ namespace CarService.WebApi.Controllers
             {
                 token = tokenString,
                 id = mechanic.Id,
-                username = mechanic.Username
+                username = mechanic.Username,
+                isAccepted = mechanic.IsAccepted,
+                name = mechanic.Name,
+                surname = mechanic.Surname,
+                workType = mechanic.WorkType
             });
         }
 
