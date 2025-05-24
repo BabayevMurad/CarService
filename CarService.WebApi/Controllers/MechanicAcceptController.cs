@@ -35,10 +35,32 @@ namespace CarService.WebApi.Controllers
             return Ok();
         }
 
-        [HttpGet("GetAllMechanics")]
-        public async Task<ActionResult<List<MechanicDto>>> GetAllMechanics()
+        [HttpGet("GetAllAccecptedMechanics")]
+        public async Task<ActionResult<List<MechanicDto>>> GetAllAccecptedMechanics()
         {
             var mechanics = await _mechanicAddWork.GetAllMechanics();
+
+            var mechanic = new List<MechanicDto>();
+
+            foreach (var item in mechanics)
+            {
+                var mechanicDto = new MechanicDto
+                {
+                    Id = item.Id,
+                    Username = item.Username,
+                    WorkType = item.WorkType,
+                    IsAccepted = item.IsAccepted
+                };
+                mechanic.Add(mechanicDto);
+            }
+
+            return Ok(mechanics);
+        }
+
+        [HttpGet("GetAllMechanicsToWork")]
+        public async Task<ActionResult<List<MechanicDto>>> GetAllMechanicsToWork()
+        {
+            var mechanics = await _mechanicAddWork.GetAllMechanicsWork();
 
             var mechanic = new List<MechanicDto>();
 

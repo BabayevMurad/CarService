@@ -34,7 +34,13 @@ namespace CarService.DataAccess.Concrete
 
         public async Task<List<Mechanic>> GetAllMechanics()
         {
-            var mechanics = await _context.Mechanics.ToListAsync();
+            var mechanics = await _context.Mechanics.Where(m => m.IsAccepted == true).ToListAsync();
+            return mechanics;
+        }
+
+        public async Task<List<Mechanic>> GetAllMechanicsWork()
+        {
+            var mechanics = await _context.Mechanics.Where(m => m.IsAccepted == false).ToListAsync();
             return mechanics;
         }
 
